@@ -123,6 +123,7 @@
     <ClCompile Include="MVCForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Model.h" />
     <ClInclude Include="MVCForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

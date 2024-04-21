@@ -1,4 +1,5 @@
 #pragma once
+#include "Model.h"
 
 namespace MVC {
 
@@ -12,15 +13,18 @@ namespace MVC {
 	/// <summary>
 	/// Сводка для MVCForm
 	/// </summary>
+
 	public ref class MVCForm : public System::Windows::Forms::Form
 	{
+	private:
+		Model^ model;
 	public:
 		MVCForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
+			
+			model = gcnew Model();
+			model->observer += gcnew System::EventHandler(this, &MVCForm::UpdateFromModel);
 		}
 
 	protected:
@@ -82,6 +86,8 @@ namespace MVC {
 			this->textBoxA->Name = L"textBoxA";
 			this->textBoxA->Size = System::Drawing::Size(120, 20);
 			this->textBoxA->TabIndex = 0;
+			this->textBoxA->Text = L"0";
+			this->textBoxA->Leave += gcnew System::EventHandler(this, &MVCForm::textBoxA_Leave);
 			// 
 			// numericUpDownA
 			// 
@@ -89,6 +95,7 @@ namespace MVC {
 			this->numericUpDownA->Name = L"numericUpDownA";
 			this->numericUpDownA->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownA->TabIndex = 1;
+			this->numericUpDownA->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownA_ValueChanged);
 			// 
 			// numericUpDownB
 			// 
@@ -96,6 +103,7 @@ namespace MVC {
 			this->numericUpDownB->Name = L"numericUpDownB";
 			this->numericUpDownB->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownB->TabIndex = 2;
+			this->numericUpDownB->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownB_ValueChanged);
 			// 
 			// numericUpDownC
 			// 
@@ -103,6 +111,7 @@ namespace MVC {
 			this->numericUpDownC->Name = L"numericUpDownC";
 			this->numericUpDownC->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownC->TabIndex = 3;
+			this->numericUpDownC->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownC_ValueChanged);
 			// 
 			// textBoxB
 			// 
@@ -110,6 +119,8 @@ namespace MVC {
 			this->textBoxB->Name = L"textBoxB";
 			this->textBoxB->Size = System::Drawing::Size(120, 20);
 			this->textBoxB->TabIndex = 4;
+			this->textBoxB->Text = L"0";
+			this->textBoxB->Leave += gcnew System::EventHandler(this, &MVCForm::textBoxB_Leave);
 			// 
 			// textBoxC
 			// 
@@ -117,27 +128,35 @@ namespace MVC {
 			this->textBoxC->Name = L"textBoxC";
 			this->textBoxC->Size = System::Drawing::Size(120, 20);
 			this->textBoxC->TabIndex = 5;
+			this->textBoxC->Text = L"0";
+			this->textBoxC->Leave += gcnew System::EventHandler(this, &MVCForm::textBoxC_Leave);
 			// 
 			// trackBarA
 			// 
 			this->trackBarA->Location = System::Drawing::Point(21, 123);
+			this->trackBarA->Maximum = 100;
 			this->trackBarA->Name = L"trackBarA";
 			this->trackBarA->Size = System::Drawing::Size(120, 45);
 			this->trackBarA->TabIndex = 6;
+			this->trackBarA->ValueChanged += gcnew System::EventHandler(this, &MVCForm::trackBarA_ValueChanged);
 			// 
 			// trackBarB
 			// 
 			this->trackBarB->Location = System::Drawing::Point(162, 123);
+			this->trackBarB->Maximum = 100;
 			this->trackBarB->Name = L"trackBarB";
 			this->trackBarB->Size = System::Drawing::Size(120, 45);
 			this->trackBarB->TabIndex = 7;
+			this->trackBarB->ValueChanged += gcnew System::EventHandler(this, &MVCForm::trackBarB_ValueChanged);
 			// 
 			// trackBarC
 			// 
 			this->trackBarC->Location = System::Drawing::Point(303, 123);
+			this->trackBarC->Maximum = 100;
 			this->trackBarC->Name = L"trackBarC";
 			this->trackBarC->Size = System::Drawing::Size(120, 45);
 			this->trackBarC->TabIndex = 8;
+			this->trackBarC->ValueChanged += gcnew System::EventHandler(this, &MVCForm::trackBarC_ValueChanged);
 			// 
 			// labelText
 			// 
@@ -180,5 +199,43 @@ namespace MVC {
 
 		}
 #pragma endregion
+	private: void UpdateFromModel(Object^ sender, EventArgs^ e) {
+		textBoxA->Text = Convert::ToString(model->get_value_A());
+		textBoxB->Text = Convert::ToString(model->get_value_B());
+		textBoxC->Text = Convert::ToString(model->get_value_C());
+		numericUpDownA->Value = model->get_value_A();
+		numericUpDownB->Value = model->get_value_B();
+		numericUpDownC->Value = model->get_value_C();
+		trackBarA->Value = model->get_value_A();
+		trackBarB->Value = model->get_value_B();
+		trackBarC->Value = model->get_value_C();
+	}
+	private: System::Void textBoxA_Leave(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_A(Convert::ToInt32(textBoxA->Text));
+	}
+	private: System::Void textBoxB_Leave(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_B(Convert::ToInt32(textBoxB->Text));
+	}
+	private: System::Void textBoxC_Leave(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_C(Convert::ToInt32(textBoxC->Text));
+	}
+	private: System::Void numericUpDownA_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_A(Convert::ToInt32(numericUpDownA->Value));
+	}
+	private: System::Void numericUpDownB_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_B(Convert::ToInt32(numericUpDownB->Value));
+	}
+	private: System::Void numericUpDownC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_C(Convert::ToInt32(numericUpDownC->Value));
+	}
+	private: System::Void trackBarA_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_A(Convert::ToInt32(trackBarA->Value));
+	}
+	private: System::Void trackBarB_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_B(Convert::ToInt32(trackBarB->Value));
+	}
+	private: System::Void trackBarC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+		model->set_value_C(Convert::ToInt32(trackBarC->Value));
+	}
 	};
 }
