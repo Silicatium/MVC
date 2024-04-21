@@ -95,7 +95,7 @@ namespace MVC {
 			this->numericUpDownA->Name = L"numericUpDownA";
 			this->numericUpDownA->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownA->TabIndex = 1;
-			this->numericUpDownA->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownA_ValueChanged);
+			this->numericUpDownA->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownA_Leave);
 			// 
 			// numericUpDownB
 			// 
@@ -103,7 +103,7 @@ namespace MVC {
 			this->numericUpDownB->Name = L"numericUpDownB";
 			this->numericUpDownB->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownB->TabIndex = 2;
-			this->numericUpDownB->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownB_ValueChanged);
+			this->numericUpDownB->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownB_Leave);
 			// 
 			// numericUpDownC
 			// 
@@ -111,7 +111,7 @@ namespace MVC {
 			this->numericUpDownC->Name = L"numericUpDownC";
 			this->numericUpDownC->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownC->TabIndex = 3;
-			this->numericUpDownC->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownC_ValueChanged);
+			this->numericUpDownC->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownC_Leave);
 			// 
 			// textBoxB
 			// 
@@ -199,34 +199,47 @@ namespace MVC {
 
 		}
 #pragma endregion
+		int res;
 	private: void UpdateFromModel(Object^ sender, EventArgs^ e) {
 		textBoxA->Text = Convert::ToString(model->get_value_A());
 		textBoxB->Text = Convert::ToString(model->get_value_B());
 		textBoxC->Text = Convert::ToString(model->get_value_C());
-		numericUpDownA->Value = model->get_value_A();
-		numericUpDownB->Value = model->get_value_B();
-		numericUpDownC->Value = model->get_value_C();
+		numericUpDownA->Text = Convert::ToString(model->get_value_A());
+		numericUpDownB->Text = Convert::ToString(model->get_value_B());
+		numericUpDownC->Text = Convert::ToString(model->get_value_C());
 		trackBarA->Value = model->get_value_A();
 		trackBarB->Value = model->get_value_B();
 		trackBarC->Value = model->get_value_C();
 	}
 	private: System::Void textBoxA_Leave(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_A(Convert::ToInt32(textBoxA->Text));
+		if (Int32::TryParse(textBoxA->Text, res));
+		else res = model->get_value_A();
+		model->set_value_A(res);
 	}
 	private: System::Void textBoxB_Leave(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_B(Convert::ToInt32(textBoxB->Text));
+		if (Int32::TryParse(textBoxB->Text, res));
+		else res = model->get_value_B();
+		model->set_value_B(res);
 	}
 	private: System::Void textBoxC_Leave(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_C(Convert::ToInt32(textBoxC->Text));
+		if (Int32::TryParse(textBoxC->Text, res));
+		else res = model->get_value_C();
+		model->set_value_C(res);
 	}
-	private: System::Void numericUpDownA_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_A(Convert::ToInt32(numericUpDownA->Value));
+	private: System::Void numericUpDownA_Leave(System::Object^ sender, System::EventArgs^ e) {
+		if (Convert::ToString(numericUpDownA->Text) == "") res = model->get_value_A();
+		else res = Convert::ToInt32(numericUpDownA->Value);
+		model->set_value_A(res);
 	}
-	private: System::Void numericUpDownB_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_B(Convert::ToInt32(numericUpDownB->Value));
+	private: System::Void numericUpDownB_Leave(System::Object^ sender, System::EventArgs^ e) {
+		if (Convert::ToString(numericUpDownA->Text) == "") res = model->get_value_B();
+		else res = Convert::ToInt32(numericUpDownB->Value);
+		model->set_value_B(res);
 	}
-	private: System::Void numericUpDownC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
-		model->set_value_C(Convert::ToInt32(numericUpDownC->Value));
+	private: System::Void numericUpDownC_Leave(System::Object^ sender, System::EventArgs^ e) {
+		if (Convert::ToString(numericUpDownA->Text) == "") res = model->get_value_C();
+		else res = Convert::ToInt32(numericUpDownC->Value);
+		model->set_value_C(res);
 	}
 	private: System::Void trackBarA_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		model->set_value_A(Convert::ToInt32(trackBarA->Value));
@@ -237,5 +250,5 @@ namespace MVC {
 	private: System::Void trackBarC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		model->set_value_C(Convert::ToInt32(trackBarC->Value));
 	}
-	};
+};
 }

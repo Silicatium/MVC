@@ -2,7 +2,7 @@
 
 public ref class Model {
 private:
-	int A;
+	int A = 0;
 	int B;
 	int C;
 public:
