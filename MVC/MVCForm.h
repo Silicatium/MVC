@@ -1,5 +1,6 @@
 #pragma once
 #include "Model.h"
+#include <fstream>
 
 namespace MVC {
 
@@ -188,6 +189,8 @@ namespace MVC {
 			this->MaximizeBox = false;
 			this->Name = L"MVCForm";
 			this->Text = L"MVC";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MVCForm::MVCForm_FormClosing);
+			this->Load += gcnew System::EventHandler(this, &MVCForm::MVCForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDownA))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDownB))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDownC))->EndInit();
@@ -250,5 +253,25 @@ namespace MVC {
 	private: System::Void trackBarC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		model->set_value_C(Convert::ToInt32(trackBarC->Value));
 	}
-};
+	private: System::Void MVCForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		std::fstream file("Data.txt");
+		if (file.is_open()) {
+			int A;
+			int B;
+			int C;
+			file >> A;
+			file >> B;
+			file >> C;
+			model->set_value_C(C);
+			model->set_value_B(B);
+			model->set_value_A(A);
+			file.close();
+		}
+	}
+	private: System::Void MVCForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+		String^ data = Convert::ToString(model->get_value_A()) + "\n" + Convert::ToString(model->get_value_B()) 
+			+ "\n" + Convert::ToString(model->get_value_C());
+		System::IO::File::WriteAllText("Data.txt", data);
+	}
+	};
 }
