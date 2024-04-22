@@ -96,6 +96,7 @@ namespace MVC {
 			this->numericUpDownA->Name = L"numericUpDownA";
 			this->numericUpDownA->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownA->TabIndex = 1;
+			this->numericUpDownA->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownA_Leave);
 			this->numericUpDownA->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownA_Leave);
 			// 
 			// numericUpDownB
@@ -104,6 +105,7 @@ namespace MVC {
 			this->numericUpDownB->Name = L"numericUpDownB";
 			this->numericUpDownB->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownB->TabIndex = 2;
+			this->numericUpDownB->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownB_Leave);
 			this->numericUpDownB->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownB_Leave);
 			// 
 			// numericUpDownC
@@ -112,6 +114,7 @@ namespace MVC {
 			this->numericUpDownC->Name = L"numericUpDownC";
 			this->numericUpDownC->Size = System::Drawing::Size(120, 20);
 			this->numericUpDownC->TabIndex = 3;
+			this->numericUpDownC->ValueChanged += gcnew System::EventHandler(this, &MVCForm::numericUpDownC_Leave);
 			this->numericUpDownC->Leave += gcnew System::EventHandler(this, &MVCForm::numericUpDownC_Leave);
 			// 
 			// textBoxB
@@ -255,6 +258,7 @@ namespace MVC {
 	}
 	private: System::Void MVCForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		std::fstream file("Data.txt");
+
 		if (file.is_open()) {
 			int A;
 			int B;
