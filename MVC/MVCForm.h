@@ -253,7 +253,7 @@ namespace MVC {
 	private: System::Void trackBarB_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
 		model->set_value_B(Convert::ToInt32(trackBarB->Value));
 	}
-	private: System::Void trackBarC_ValueChanged(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void trackBarC_ValueChanged(System::Object^ sender, System::EventArgs ^ e) {
 		model->set_value_C(Convert::ToInt32(trackBarC->Value));
 	}
 	private: System::Void MVCForm_Load(System::Object^ sender, System::EventArgs^ e) {
