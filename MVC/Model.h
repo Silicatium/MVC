@@ -25,7 +25,7 @@ public:
 		}
 	}
 	void update_values() {
-		observer->Invoke(this, nullptr);
+		//observer->Invoke(this, nullptr);
 	}
 	void write_to_file() {
 		System::String^ data = System::Convert::ToString(A) + "\n" + System::Convert::ToString(B) + "\n" + System::Convert::ToString(C);
